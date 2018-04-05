@@ -200,6 +200,17 @@ module Chargify
       def id
         self.component_id
       end
+
+      def price_points(params = {})
+        params.merge!({:component_id => self.id})
+        ::Chargify::Subscription::Component::PricePoint.find(:all, :params => params)
+      end
+
+      private
+
+      class PricePoint < Base
+        self.prefix = "/components/:component_id/"
+      end
     end
 
     class Event < Base
